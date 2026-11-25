@@ -1,0 +1,64 @@
+<div class="page-shell">
+  <section class="hero" aria-labelledby="page-title">
+    <div class="hero-copy">
+      <div class="hero-kicker"><span class="pulse-dot" aria-hidden="true"></span> CARNET DE VOYAGE · SÉNÉGAL</div>
+      <h1 id="page-title">Le Sénégal se découvre <em>avec ses guides.</em></h1>
+      <p>Des voix locales, des histoires singulières et des rencontres qui donnent envie de voyager autrement.</p>
+      <div class="hero-bottom">
+        <button type="button" class="hero-cta" (click)="ouvrirAjout()"><span aria-hidden="true">＋</span> Ajouter un guide</button>
+        <span class="hero-note"><span class="mini-sun" aria-hidden="true">✳</span> 14 régions, mille façons de voyager</span>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-ring ring-one"></div><div class="art-ring ring-two"></div>
+      <svg class="landscape" viewBox="0 0 440 275" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="310" cy="82" r="42" fill="#E9B95E"/>
+        <path d="M0 207c62-26 106-23 168-3 60 20 113 5 168-20 44-20 76-19 104-8v99H0v-68Z" fill="#507354"/>
+        <path d="M0 224c66-27 111-15 166 5 58 21 115 19 165-2 48-20 77-21 109-9v57H0v-51Z" fill="#2F5945"/>
+        <path d="M195 219c11-41 12-71 7-99-2-13-8-24-18-31 20 7 35 22 39 42 4 25 0 59-7 94l-21-6Z" fill="#D9A66B"/>
+        <path d="M195 91c-22 0-36-9-47-24 21 10 36 10 48 6-17-9-26-21-29-35 15 15 30 20 48 18-1-17 4-29 16-42-6 18-4 31 2 43 13-12 29-17 48-17-17 9-27 21-31 36 18-7 34-5 51 3-23-1-41 7-55 21-12 11-33 12-51-9Z" fill="#D9A66B"/>
+        <path d="M202 93c-16 0-27-7-38-17m66 17c12-9 24-13 41-13m-58 3c-9-12-14-24-12-41m25 44c5-15 14-26 29-35" stroke="#F0C78D" stroke-width="5" stroke-linecap="round"/>
+        <path d="M76 198c0-11 8-20 18-20s18 9 18 20v22H76v-22Z" fill="#D9A66B"/><path d="M68 180c0-12 11-21 26-21s26 9 26 21H68Z" fill="#E6BD7B"/>
+        <path d="M75 218v-17m18 17v-19m18 19v-17" stroke="#F0C78D" stroke-width="2"/>
+        <path d="M316 210h72" stroke="#E9B95E" stroke-width="2" stroke-linecap="round" opacity=".8"/><path d="M333 221h91" stroke="#E9B95E" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+        <path d="M26 235h47" stroke="#E9B95E" stroke-width="2" stroke-linecap="round" opacity=".65"/>
+      </svg>
+      <div class="art-stamp"><span>TERANGA</span><strong>✳</strong><span>SÉNÉGAL</span></div>
+    </div>
+    <span class="hero-bottom-line" aria-hidden="true"></span>
+  </section>
+
+  @if (message) { <div class="toast" [class.toast-error]="typeMessage === 'error'" role="status" aria-live="polite"><span aria-hidden="true">{{ typeMessage === 'error' ? '!' : '✓' }}</span>{{ message }}<button type="button" aria-label="Fermer le message" (click)="message = ''">×</button></div> }
+
+  <section class="stats" aria-label="Résumé du répertoire">
+    <article class="stat-card stat-guides"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20c.6-3.6 2.8-5.4 6.5-5.4s5.9 1.8 6.5 5.4H5.5Z"/></svg></span><div><span class="stat-label">Guides référencés</span><strong>{{ guides.length }}</strong><small>Des talents d’ici</small></div><span class="stat-corner" aria-hidden="true">01</span></article>
+    <article class="stat-card stat-active"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7"/></svg></span><div><span class="stat-label">Guides disponibles</span><strong>{{ nombreActifs }}</strong><small>Prêts à vous faire visiter</small></div><span class="stat-corner" aria-hidden="true">02</span></article>
+    <article class="stat-card stat-rating"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/></svg></span><div><span class="stat-label">La note des voyageurs</span><strong>{{ noteMoyenne }} <small class="out-of">/ 5</small></strong><small>De belles rencontres, bien notées</small></div><span class="stat-corner" aria-hidden="true">03</span></article>
+  </section>
+
+  <section class="directory panel" aria-labelledby="directory-title">
+    <div class="section-heading"><div><div class="section-title-line"><span class="section-flower" aria-hidden="true">✳</span><h2 id="directory-title">Le carnet des guides</h2></div><p>{{ guidesFiltres.length }} résultat{{ guidesFiltres.length === 1 ? '' : 's' }} parmi {{ guides.length }} guide{{ guides.length === 1 ? '' : 's' }}</p></div><button type="button" class="text-button" (click)="reinitialiserDemo()"><span aria-hidden="true">↺</span> Réinitialiser</button></div>
+    <div class="filters">
+      <div class="search-field"><label class="sr-only" for="guide-search">Rechercher par prénom, nom ou spécialité</label><span class="search-icon" aria-hidden="true">⌕</span><input id="guide-search" type="search" [(ngModel)]="recherche" placeholder="Un guide, une histoire, une spécialité…"></div>
+      <div class="filter-select"><label class="sr-only" for="region-filter">Filtrer par région</label><span aria-hidden="true">⌖</span><select id="region-filter" [(ngModel)]="regionSelectionnee"><option value="">Toutes les régions</option>@for (region of regions; track region) {<option [value]="region">{{ region }}</option>}</select></div>
+      <div class="filter-select"><label class="sr-only" for="status-filter">Filtrer par statut</label><span aria-hidden="true">◉</span><select id="status-filter" [(ngModel)]="statutSelectionne"><option value="">Tous les statuts</option><option value="Actif">Disponible</option><option value="Inactif">Indisponible</option></select></div>
+      @if (recherche || regionSelectionnee || statutSelectionne) { <button type="button" class="clear-button" (click)="effacerFiltres()">Effacer</button> }
+    </div>
+    @if (guides.length === 0) {
+      <div class="zero-state"><span aria-hidden="true">✳</span><h3>Le carnet est encore vide</h3><p>Ajoutez le premier guide et commencez à raconter le Sénégal.</p><button class="add-button" type="button" (click)="ouvrirAjout()">＋ Ajouter un guide</button></div>
+    } @else {
+      <app-guide-list [guides]="guidesFiltres" (modifier)="ouvrirModification($event)" (supprimer)="supprimer($event)"></app-guide-list>
+    }
+    <div class="table-footer"><span><i class="footer-dot" aria-hidden="true"></i> Données fictives · Coordonnées de démonstration</span><span>Enregistré sur cet appareil</span></div>
+  </section>
+
+  @if (formulaireVisible) {
+    <div class="modal-backdrop" (click)="$event.target === $event.currentTarget && fermerFormulaire()" (keydown.escape)="fermerFormulaire()">
+      <section class="form-dialog" role="dialog" aria-modal="true" aria-labelledby="form-title">
+        <div class="form-heading"><div><p class="eyebrow">{{ guideEnEdition ? 'METTRE À JOUR LE CARNET' : 'NOUVELLE RENCONTRE' }}</p><h2 id="form-title">{{ guideEnEdition ? 'Modifier le guide' : 'Ajouter un guide' }}</h2><p>Complétez les informations du professionnel.</p></div><button type="button" class="close-button" aria-label="Fermer le formulaire" (click)="fermerFormulaire()">×</button></div>
+        <app-guide-form [guide]="guideEnEdition" (enregistrer)="enregistrer($event)" (annuler)="fermerFormulaire()"></app-guide-form>
+      </section>
+    </div>
+  }
+  <p class="page-footnote"><span aria-hidden="true">✳</span> Un outil de démonstration pour la promotion du tourisme sénégalais.</p>
+</div>

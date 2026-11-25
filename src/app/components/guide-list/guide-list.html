@@ -1,0 +1,34 @@
+<div class="table-wrap">
+  <table>
+    <caption class="sr-only">Répertoire des guides touristiques correspondant aux filtres sélectionnés</caption>
+    <thead>
+      <tr>
+        <th scope="col">Guide</th>
+        <th scope="col">Région & spécialité</th>
+        <th scope="col">Contact</th>
+        <th scope="col">Statut</th>
+        <th scope="col">Note</th>
+        <th scope="col"><span class="sr-only">Actions</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (guide of guides; track guide.id) {
+        <tr>
+          <td data-label="Guide">
+            <div class="person">
+              <span class="avatar" aria-hidden="true">{{ guide.prenom.charAt(0) }}{{ guide.nom.charAt(0) }}</span>
+              <span><strong>{{ guide.prenom }} {{ guide.nom }}</strong><small>ID guide · {{ guide.id.toString().padStart(3, '0') }}</small></span>
+            </div>
+          </td>
+          <td data-label="Région & spécialité"><strong>{{ guide.region }}</strong><small>{{ guide.specialite }}</small></td>
+          <td data-label="Contact"><a [href]="'mailto:' + guide.email">{{ guide.email }}</a><small>{{ guide.telephone }}</small></td>
+          <td data-label="Statut"><span class="status" [class.active]="guide.statut === 'Actif'" [class.inactive]="guide.statut === 'Inactif'"><span aria-hidden="true"></span>{{ guide.statut }}</span></td>
+          <td data-label="Note"><span class="rating"><span aria-hidden="true">★</span> {{ guide.note | number:'1.1-1' }}<span class="sr-only"> sur 5</span></span></td>
+          <td data-label="Actions"><div class="actions"><button type="button" class="icon-button" [attr.aria-label]="'Modifier la fiche de ' + guide.prenom + ' ' + guide.nom" (click)="modifier.emit(guide)">Modifier</button><button type="button" class="icon-button danger" [attr.aria-label]="'Supprimer la fiche de ' + guide.prenom + ' ' + guide.nom" (click)="supprimer.emit(guide)">Supprimer</button></div></td>
+        </tr>
+      } @empty {
+        <tr><td colspan="6" class="empty-cell"><div class="empty-icon" aria-hidden="true">⌕</div><strong>Aucun guide trouvé</strong><p>Essayez d’élargir votre recherche ou de modifier les filtres.</p></td></tr>
+      }
+    </tbody>
+  </table>
+</div>

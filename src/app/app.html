@@ -1,0 +1,10 @@
+<header class="topbar">
+  <a class="brand" routerLink="/" aria-label="Teranga Guides, accueil">
+    <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 42 42" fill="none"><rect x="1" y="1" width="40" height="40" rx="13" fill="currentColor"/><path d="M8 27.8 17 12l4.8 8.2 4.1-5.5L35 27.8H8Z" stroke="#F4EACF" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 28c2.5-1.7 4.7-1.7 7.2 0 2.4-1.7 4.7-1.7 7.2 0 2.4-1.7 4.7-1.7 7.2 0" stroke="#E9BE67" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+    <span><strong>teranga<span>guides</span></strong><small>LE SÉNÉGAL À VOTRE RYTHME</small></span>
+  </a>
+  <nav aria-label="Navigation principale"><a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }"><span class="nav-glyph" aria-hidden="true">⌂</span> Répertoire</a><a routerLink="/a-propos" routerLinkActive="active-link"><span class="nav-glyph" aria-hidden="true">✳</span> À propos</a></nav>
+  <div class="topbar-note"><span></span> Carnet de démonstration</div>
+</header>
+<main><router-outlet></router-outlet></main>
+<footer class="footer"><span class="footer-brand">TERANGA <i>✳</i> GUIDES</span><span>Outil pédagogique · Fiches fictives</span></footer>

@@ -1,0 +1,9 @@
+<main class="about-shell">
+  <p class="eyebrow">DOCUMENTATION DU PROTOTYPE</p>
+  <h1>À propos du projet</h1>
+  <p class="lead">Teranga Guides est une application pédagogique de gestion d’un répertoire fictif de guides touristiques au Sénégal.</p>
+  <section class="info-card"><span class="number">01</span><div><h2>Fonctionnalités réalisées</h2><p>Consultation des fiches, recherche par nom, prénom ou spécialité, filtres par région et statut, ajout, modification et suppression avec validation du formulaire et confirmation avant suppression. Les préférences sont enregistrées localement dans le navigateur.</p></div></section>
+  <section class="info-card"><span class="number">02</span><div><h2>Limites actuelles</h2><ul><li>Les données sont conservées uniquement sur l’appareil et le navigateur utilisés. Il n’y a ni partage entre agents ni sauvegarde centralisée.</li><li>Le stockage local n’est pas sécurisé et les validations du navigateur peuvent être contournées. Cette démonstration ne doit pas recevoir de données personnelles réelles.</li></ul></div></section>
+  <section class="info-card"><span class="number">03</span><div><h2>Évolution vers une API REST</h2><p>Une prochaine version pourrait connecter le service Angular à une API REST via <code>HttpClient</code> : <code>GET /api/guides</code>, <code>POST /api/guides</code>, <code>PUT /api/guides/:id</code> et <code>DELETE /api/guides/:id</code>. Le serveur assurerait la validation définitive, l’authentification et les autorisations, tandis que l’interface afficherait les états de chargement et les erreurs réseau.</p></div></section>
+  <p class="version-note">Projet d’évaluation · Développement front-end · Angular standalone</p>
+</main>
