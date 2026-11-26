@@ -7,6 +7,7 @@ export interface GuideTouristique {
   email: string;
   telephone: string;
   region: string;
+  langues: string[];
   specialite: string;
   statut: StatutGuide;
   note: number;

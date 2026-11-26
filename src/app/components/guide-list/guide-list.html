@@ -16,11 +16,21 @@
         <tr>
           <td data-label="Guide">
             <div class="person">
-              <span class="avatar" aria-hidden="true">{{ guide.prenom.charAt(0) }}{{ guide.nom.charAt(0) }}</span>
-              <span><strong>{{ guide.prenom }} {{ guide.nom }}</strong><small>ID guide · {{ guide.id.toString().padStart(3, '0') }}</small></span>
+              
+      
+              <span class="guide-id-number" style="font-weight: bold; margin-right: 8px; color: #087f73;">{{ guide.id }}</span>
+              <span><strong>{{ guide.prenom }} {{ guide.nom }}</strong></span>
             </div>
           </td>
-          <td data-label="Région & spécialité"><strong>{{ guide.region }}</strong><small>{{ guide.specialite }}</small></td>
+          
+          <td data-label="Région & spécialité">
+            <strong>{{ guide.region }}</strong>
+            <small>{{ guide.specialite }}</small>
+            @if (guide.langues && guide.langues.length > 0) {
+              <small class="langues-badge">🗣️ {{ guide.langues.join(', ') }}</small>
+            }
+          </td>
+
           <td data-label="Contact"><a [href]="'mailto:' + guide.email">{{ guide.email }}</a><small>{{ guide.telephone }}</small></td>
           <td data-label="Statut"><span class="status" [class.active]="guide.statut === 'Actif'" [class.inactive]="guide.statut === 'Inactif'"><span aria-hidden="true"></span>{{ guide.statut }}</span></td>
           <td data-label="Note"><span class="rating"><span aria-hidden="true">★</span> {{ guide.note | number:'1.1-1' }}<span class="sr-only"> sur 5</span></span></td>

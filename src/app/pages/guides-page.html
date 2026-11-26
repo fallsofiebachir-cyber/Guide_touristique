@@ -37,7 +37,7 @@
   </section>
 
   <section class="directory panel" aria-labelledby="directory-title">
-    <div class="section-heading"><div><div class="section-title-line"><span class="section-flower" aria-hidden="true">✳</span><h2 id="directory-title">Le carnet des guides</h2></div><p>{{ guidesFiltres.length }} résultat{{ guidesFiltres.length === 1 ? '' : 's' }} parmi {{ guides.length }} guide{{ guides.length === 1 ? '' : 's' }}</p></div><button type="button" class="text-button" (click)="reinitialiserDemo()"><span aria-hidden="true">↺</span> Réinitialiser</button></div>
+    <div class="section-heading"><div><div class="section-title-line"><span class="section-flower" aria-hidden="true">✳</span><h2 id="directory-title">Répertoire des guides</h2></div><p>{{ guidesFiltres.length }} résultat{{ guidesFiltres.length === 1 ? '' : 's' }} parmi {{ guides.length }} guide{{ guides.length === 1 ? '' : 's' }}</p></div><button type="button" class="text-button" (click)="reinitialiserDemo()"><span aria-hidden="true">↺</span> Réinitialiser</button></div>
     <div class="filters">
       <div class="search-field"><label class="sr-only" for="guide-search">Rechercher par prénom, nom ou spécialité</label><span class="search-icon" aria-hidden="true">⌕</span><input id="guide-search" type="search" [(ngModel)]="recherche" placeholder="Un guide, une histoire, une spécialité…"></div>
       <div class="filter-select"><label class="sr-only" for="region-filter">Filtrer par région</label><span aria-hidden="true">⌖</span><select id="region-filter" [(ngModel)]="regionSelectionnee"><option value="">Toutes les régions</option>@for (region of regions; track region) {<option [value]="region">{{ region }}</option>}</select></div>

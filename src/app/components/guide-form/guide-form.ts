@@ -25,6 +25,7 @@ export class GuideFormComponent implements OnChanges {
     email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
     telephone: ['', [Validators.required, Validators.pattern(/^\+?221[\s.-]?(?:7[05678])(?:[\s.-]?\d){7}$|^7[05678](?:[\s.-]?\d){7}$/)]],
     region: ['', Validators.required],
+    langues: ['', [Validators.required]],
     specialite: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
     statut: this.fb.nonNullable.control<StatutGuide>('Actif', Validators.required),
     note: [4.5, [Validators.required, Validators.min(0), Validators.max(5)]],
@@ -40,12 +41,13 @@ export class GuideFormComponent implements OnChanges {
         email: this.guide.email,
         telephone: this.guide.telephone,
         region: this.guide.region,
+        langues: this.guide.langues.join(', '), // Transforme le tableau en texte pour l'input
         specialite: this.guide.specialite,
         statut: this.guide.statut,
         note: this.guide.note,
       });
     } else {
-      this.formulaire.reset({ prenom: '', nom: '', email: '', telephone: '', region: '', specialite: '', statut: 'Actif', note: 4.5 });
+      this.formulaire.reset({ prenom: '', nom: '', email: '', telephone: '', region: '', langues: '', specialite: '', statut: 'Actif', note: 4.5 });
     }
   }
 
@@ -67,16 +69,28 @@ export class GuideFormComponent implements OnChanges {
   }
 
   soumettre(): void {
-  this.submitted = true;
-  console.log('Formulaire valide ?', this.formulaire.valid);
-  console.log('Valeurs :', this.formulaire.getRawValue());
-  console.log('Erreurs :', this.formulaire.errors);
+    this.submitted = true;
+    console.log('Formulaire valide ?', this.formulaire.valid);
+    console.log('Valeurs :', this.formulaire.getRawValue());
+    console.log('Erreurs :', this.formulaire.errors);
 
-  if (this.formulaire.invalid) {
-    this.formulaire.markAllAsTouched();
-    return;
+    if (this.formulaire.invalid) {
+      this.formulaire.markAllAsTouched();
+      return;
+    }
+    
+    const valeur = this.formulaire.getRawValue();
+
+    // Transforme le texte des langues en tableau de chaînes (ex: "Français, Wolof" -> ["Français", "Wolof"])
+    const languesTableau = valeur.langues
+      .split(',')
+      .map((l) => l.trim())
+      .filter((l) => l.length > 0);
+
+    this.enregistrer.emit({ 
+      ...valeur, 
+      langues: languesTableau, // Remplace la string par le tableau
+      ...(this.guide ? { id: this.guide.id } : {}) 
+    });
   }
-  const valeur = this.formulaire.getRawValue();
-  this.enregistrer.emit({ ...valeur, ...(this.guide ? { id: this.guide.id } : {}) });
-}
 }

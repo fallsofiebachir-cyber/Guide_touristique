@@ -4,12 +4,12 @@ import { GuideTouristique } from '../models/guide-touristique';
 const STORAGE_KEY = 'senegal-guides-touristiques-v1';
 
 const GUIDES_DEMO: GuideTouristique[] = [
-  { id: 1, prenom: 'Awa', nom: 'Diop', email: 'awa.diop@example.sn', telephone: '+221 77 123 45 67', region: 'Dakar', specialite: 'Patrimoine et histoire', statut: 'Actif', note: 4.9 },
-  { id: 2, prenom: 'Moussa', nom: 'Ndiaye', email: 'moussa.ndiaye@example.sn', telephone: '+221 76 234 56 78', region: 'Saint-Louis', specialite: 'Architecture coloniale', statut: 'Actif', note: 4.7 },
-  { id: 3, prenom: 'Fatou', nom: 'Sarr', email: 'fatou.sarr@example.sn', telephone: '+221 78 345 67 89', region: 'Ziguinchor', specialite: 'Écotourisme et mangrove', statut: 'Actif', note: 4.8 },
-  { id: 4, prenom: 'Ibrahima', nom: 'Fall', email: 'ibrahima.fall@example.sn', telephone: '+221 70 456 78 90', region: 'Thiès', specialite: 'Lac Rose et artisanat', statut: 'Inactif', note: 4.4 },
-  { id: 5, prenom: 'Mariama', nom: 'Ba', email: 'mariama.ba@example.sn', telephone: '+221 77 567 89 01', region: 'Tambacounda', specialite: 'Parc national du Niokolo-Koba', statut: 'Actif', note: 4.6 },
-  { id: 6, prenom: 'Cheikh', nom: 'Gueye', email: 'cheikh.gueye@example.sn', telephone: '+221 76 678 90 12', region: 'Diourbel', specialite: 'Tourisme religieux', statut: 'Inactif', note: 4.5 },
+  { id: 1, prenom: 'Awa', nom: 'Diop', region: 'Dakar', langues: ['Français', 'Wolof', 'Anglais'], specialite: 'Patrimoine et histoire', email: 'awa.diop@example.sn', telephone: '+221 77 123 45 67', statut: 'Actif', note: 4.9 },
+  { id: 2, prenom: 'Mamadou', nom: 'Sagna', region: 'Ziguinchor', langues: ['Français', 'Diola', 'Anglais'], specialite: 'Écotourisme', email: 'mamadou.sagna@example.sn', telephone: '+221 77 234 56 78', statut: 'Actif', note: 4.8 },
+  { id: 3, prenom: 'Fatou', nom: 'Ndiaye', region: 'Saint-Louis', langues: ['Français', 'Wolof'], specialite: 'Architecture coloniale', email: 'fatou.ndiaye@example.sn', telephone: '+221 78 345 67 89', statut: 'Actif', note: 4.7 },
+  { id: 4, prenom: 'Ibrahima', nom: 'Fall', region: 'Thiès', langues: ['Français', 'Sérère', 'Wolof'], specialite: 'Lac Rose et artisanat', email: 'ibrahima.fall@example.sn', telephone: '+221 70 456 78 90', statut: 'Inactif', note: 4.4 },
+  { id: 5, prenom: 'Mariama', nom: 'Ba', region: 'Tambacounda', langues: ['Français', 'Pulaar'], specialite: 'Parc national du Niokolo-Koba', email: 'mariama.ba@example.sn', telephone: '+221 77 567 89 01', statut: 'Actif', note: 4.6 },
+  { id: 6, prenom: 'Cheikh', nom: 'Gueye', region: 'Diourbel', langues: ['Français', 'Wolof', 'Arabe'], specialite: 'Tourisme religieux', email: 'cheikh.gueye@example.sn', telephone: '+221 76 678 90 12', statut: 'Inactif', note: 4.5 }
 ];
 
 @Injectable({ providedIn: 'root' })
@@ -17,13 +17,13 @@ export class GuideTouristiqueService {
   private guides: GuideTouristique[] = this.chargerGuides();
 
   obtenirTous(): GuideTouristique[] {
-    return [...this.guides].sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+    // Trie par ID croissant (1, 2, 3...) au lieu du nom de famille
+    return [...this.guides].sort((a, b) => a.id - b.id);
   }
 
   ajouter(guide: Omit<GuideTouristique, 'id'>): GuideTouristique {
-    const nouvelId = Math.max(0, ...this.guides.map((item) => item.id)) + 1;
-    const nouveauGuide: GuideTouristique = { ...guide, id: nouvelId };
-    this.guides = [...this.guides, nouveauGuide];
+    const nouveauGuide: GuideTouristique = { ...guide, id: this.guides.length + 1 };
+    this.guides = this.reordonnerIds([...this.guides, nouveauGuide]);
     this.sauvegarder();
     return nouveauGuide;
   }
@@ -35,13 +35,21 @@ export class GuideTouristiqueService {
   }
 
   supprimer(id: number): void {
-    this.guides = this.guides.filter((guide) => guide.id !== id);
+    const restants = this.guides.filter((guide) => guide.id !== id);
+    this.guides = this.reordonnerIds(restants);
     this.sauvegarder();
   }
 
   reinitialiserDemo(): void {
-    this.guides = GUIDES_DEMO.map((guide) => ({ ...guide }));
+    this.guides = GUIDES_DEMO.map((guide) => ({ ...guide, langues: [...guide.langues] }));
     this.sauvegarder();
+  }
+
+  private reordonnerIds(liste: GuideTouristique[]): GuideTouristique[] {
+    return liste.map((guide, index) => ({
+      ...guide,
+      id: index + 1
+    }));
   }
 
   private chargerGuides(): GuideTouristique[] {
@@ -49,12 +57,14 @@ export class GuideTouristiqueService {
       const sauvegarde = localStorage.getItem(STORAGE_KEY);
       if (sauvegarde) {
         const guides: unknown = JSON.parse(sauvegarde);
-        if (Array.isArray(guides)) return guides as GuideTouristique[];
+        if (Array.isArray(guides)) {
+          return this.reordonnerIds(guides as GuideTouristique[]);
+        }
       }
     } catch {
       // Une sauvegarde locale illisible ne doit pas empêcher l'application de démarrer.
     }
-    return GUIDES_DEMO.map((guide) => ({ ...guide }));
+    return GUIDES_DEMO.map((guide) => ({ ...guide, langues: [...guide.langues] }));
   }
 
   private sauvegarder(): void {
